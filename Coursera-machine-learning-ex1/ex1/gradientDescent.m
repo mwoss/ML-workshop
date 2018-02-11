@@ -16,8 +16,9 @@ for iter = 1:num_iters
     % Hint: While debugging, it can be useful to print out the values
     %       of the cost function (computeCost) and gradient here.
     %
-
-
+    predictions = X * theta;
+    gradient = 1/m * (X' * (predictions - y));
+    theta = theta - alpha * gradient;
 
 
 
