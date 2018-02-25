@@ -65,31 +65,49 @@ Theta2_grad = zeros(size(Theta2));
 
 
 %Part 1:
-X = [ones(m,1) X];
-hypot1 = sigmoid(X * Theta1');
-hypot1 = [ones(m,1) hypot1];
+X = [ones(m,1) X]; %5000x401, bias unit added
+hypot1 = sigmoid(X * Theta1'); %5000x25
+hypot1 = [ones(m,1) hypot1]; %5000x26, bias added
 hypot_final = sigmoid(hypot1 * Theta2'); %5000x10 matrix
 
-yv = [1:num_labels] == y; % super smart way to create matrix described in excercise
-%found in coursera resources
+yv = [1:num_labels] == y; % super smart way to create logical matrix described in excercise found in coursera resources
 for i=1:num_labels
   J += 1/m * sum(-yv(:,i)' * log(hypot_final(:,i)) - (1 - yv(:,i))' * log(1 - hypot_final(:,i)));
 end
 %with regularization
-J += (lambda/(2*m) * (sum(sum(Theta1(:,2:end) .^2, 1), 2) + sum(sum(Theta2(:,2:end) .^2, 1) , 2)))
-%----------------------
+J += (lambda/(2*m) * (sum(sum(Theta1(:,2:end) .^2, 1), 2) + sum(sum(Theta2(:,2:end) .^2, 1) , 2)));
+
+%--------------------------------------------------------------------------------------------------
 
 
+%Part 2:
+for i=1:m
+  a_1 = X(i,:); % already have bias unit
+  
+  z_2 = Theta1 *  a_1'; 
+  a_2 = sigmoid(z_2);
+  a_2 = [1; a_2]; % add bias unit
+  
+  a_3 = sigmoid(Theta2 * a_2);
+  
+  delta_3 = a_3 - yv(i, :)'; %setting delta^3_k = a^3_k - y_k
+  
+  delta_2 = Theta2' * delta_3 .* sigmoidGradient([1; z_2]); % calculate delta_2
+  delta_2 = delta_2(2:end); %strip bias
+  
+  Theta1_grad += delta_2 * a_1; %accumulate gradeints
+  Theta2_grad += delta_3 * a_2';
+end
+Theta1_grad = Theta1_grad ./ m; %obtain unregularized gradient
+Theta2_grad = Theta2_grad ./ m;
+
+%--------------------------------------------------------------------------------------------------
 
 
-
-
-
-
-
-
-
-
+%Part 3:
+Theta1_grad(:,2:end) += (lambda/m) * Theta1(:, 2:end);
+Theta2_grad(:,2:end) += (lambda/m) * Theta2(:, 2:end);
+%Regularization, ommiting when j=0 (bias units)
 
 
 
