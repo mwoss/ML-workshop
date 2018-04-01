@@ -98,7 +98,14 @@ while ~isempty(email_contents)
     %
 
 
-
+    %if ismember(str, vocabList)
+     % word_indices = [word_indices; find(vocabList == str)]
+    %end
+    if any(strcmp(vocabList, str))
+      index = find(ismember(vocabList,str));
+      word_indices = [word_indices; index];
+    end
+      
 
 
 
