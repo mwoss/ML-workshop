@@ -26,6 +26,12 @@ centroids = zeros(K, n);
 % Note: You can use a for-loop over the centroids to compute this.
 %
 
+%trying to implement vectorized methods
+
+for i=1:size(centroids, 1)
+  indecies = find(idx==i);
+  centroids(i, :) = sum(X(indecies, :)) ./ size(indecies,1);
+end
 
 
 

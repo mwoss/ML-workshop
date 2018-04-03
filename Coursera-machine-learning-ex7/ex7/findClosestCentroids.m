@@ -20,8 +20,16 @@ idx = zeros(size(X,1), 1);
 %
 % Note: You can use a for-loop over the examples to compute this.
 %
-
-
+for i=1:size(X,1)
+  temp = zeros(K,1);
+  for j=1:size(centroids,1)
+    temp(j) = sum((X(i,:) - centroids(j, :)) .^ 2);
+    %sqrt((X(i,1)-centroids(j,1))^2+(X(i,2)-centroids(j,2))^2);
+    % oh i thought i had to calc distance between those 2 points
+  end;
+  [val, index] = min(temp);
+  idx(i) = index;
+end;
 
 
 
