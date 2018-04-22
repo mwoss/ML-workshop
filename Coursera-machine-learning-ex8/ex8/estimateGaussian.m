@@ -22,10 +22,10 @@ sigma2 = zeros(n, 1);
 %
 
 
+mu = 1/m .* (sum(X, 1));
 
-
-
-
+mu_prop = ones(m, 1) * mu;
+sigma2 = 1/m .* sum((X - mu_prop).^2);
 
 
 
