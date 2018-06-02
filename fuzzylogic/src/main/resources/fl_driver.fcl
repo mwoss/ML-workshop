@@ -38,9 +38,9 @@ TERM tall := (35, 0) (40, 0.5) (45, 0.8) (50, 0.90) (55, 1) (60, 1) (65, 1);
 END_FUZZIFY
 
 DEFUZZIFY flowerModification
-TERM water := (0, 1) (2, 1) (3, 0.50) (4, 0) (7, 0);
+TERM trim := (0, 1) (2, 1) (3, 0.50) (4, 0) (7, 0);
 TERM doNothing:= (2, 0) (3, 0.50) (4, 1) (6, 1) (7, 0.50) (8, 0);
-TERM trim := (3, 0) (6, 0) (7, 0.50) (8, 1) (10, 1);
+TERM ultraTrim := (3, 0) (6, 0) (7, 0.50) (8, 1) (10, 1);
 METHOD : COG;
 DEFAULT := 0;
 END_DEFUZZIFY
@@ -54,20 +54,20 @@ RULE 0: IF temperature IS cold THEN flowerModification is doNothing;
 
 RULE 1: IF timeOfDay IS night THEN flowerModification is doNothing;
 
-RULE 2: IF plantHeight IS short AND (humidity IS moderately OR humidity IS dry) THEN flowerModification is water;
+RULE 2: IF plantHeight IS short AND (humidity IS moderately OR humidity IS dry) THEN flowerModification is trim;
 RULE 3: IF plantHeight IS short AND humidity IS humid THEN flowerModification is doNothing;
 
-RULE 4: IF plantHeight IS tall AND (humidity IS moderately OR humidity IS humid) THEN flowerModification is trim;
+RULE 4: IF plantHeight IS tall AND (humidity IS moderately OR humidity IS humid) THEN flowerModification is ultraTrim;
 RULE 5: IF plantHeight IS tall AND humidity IS dry THEN flowerModification is doNothing;
 
-RULE 6: IF plantHeight is normal AND humidity IS moderately AND (temperature IS warm OR temperature is hot) THEN flowerModification is water;
+RULE 6: IF plantHeight is normal AND humidity IS moderately AND (temperature IS warm OR temperature is hot) THEN flowerModification is trim;
 RULE 7: IF plantHeight is normal AND humidity IS moderately AND temperature IS moderately THEN flowerModification is doNothing;
-RULE 8: IF plantHeight is normal AND humidity IS humid AND timeOfDay IS evening THEN flowerModification is trim;
-RULE 9: IF plantHeight is normal AND humidity IS dry AND (timeOfDay IS morning OR timeOfDay IS evening) THEN flowerModification is water;
+RULE 8: IF plantHeight is normal AND humidity IS humid AND timeOfDay IS evening THEN flowerModification is ultraTrim;
+RULE 9: IF plantHeight is normal AND humidity IS dry AND (timeOfDay IS morning OR timeOfDay IS evening) THEN flowerModification is trim;
 RULE 10: IF plantHeight is normal AND humidity IS dry AND timeOfDay IS noon THEN flowerModification is doNothing;
-RULE 11: IF plantHeight is normal AND humidity IS humid AND temperature IS hot THEN flowerModification is trim;
+RULE 11: IF plantHeight is normal AND humidity IS humid AND temperature IS hot THEN flowerModification is ultraTrim;
 RULE 12: IF plantHeight is normal AND humidity IS humid AND temperature IS moderately THEN flowerModification is doNothing;
-RULE 13: IF plantHeight is normal AND humidity IS humid AND temperature IS hot AND timeOfDay IS morning THEN flowerModification is water;
+RULE 13: IF plantHeight is normal AND humidity IS humid AND temperature IS hot AND timeOfDay IS morning THEN flowerModification is trim;
 RULE 14: IF plantHeight is normal AND humidity IS humid AND temperature IS hot AND timeOfDay IS noon THEN flowerModification is doNothing;
 
 END_RULEBLOCK
